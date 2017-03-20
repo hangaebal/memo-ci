@@ -11,4 +11,12 @@ class Post extends CI_Model {
         return $query->result();
     }
 
+    public function get($id) {
+        $query = $this->db->query("SELECT *
+            FROM post
+            WHERE id = ".$this->db->escape($id)."
+            AND del_yn = 'N'
+		");
+        return $query->row();
+    }
 }

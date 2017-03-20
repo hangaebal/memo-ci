@@ -19,5 +19,17 @@ class Root extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
+    public function post($id)
+    {
 
+        $data['post'] = $this->post->get($id);
+        if ($data['post']->type != 'text') {
+            $this->load->model('image');
+            $data['image_list'] = $this->image->get_post_image_list($data['post']->id);
+        }
+
+        $this->load->view('templates/header', $this->header_data);
+        $this->load->view('root/post', $data);
+        $this->load->view('templates/footer');
+    }
 }
