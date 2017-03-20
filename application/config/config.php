@@ -1,6 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
+if( ! ini_get('date.timezone') )
+{
+    date_default_timezone_set('Asia/Seoul');
+}
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -227,7 +233,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 4;
+$config['log_threshold'] = 2;
 
 /*
 |--------------------------------------------------------------------------
