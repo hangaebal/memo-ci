@@ -1,3 +1,6 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <article id="postArticle">
     <?php if ($post->type == 'text'): ?>
         <div><?php echo nl2br($post->contents) ?></div>

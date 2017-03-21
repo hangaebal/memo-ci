@@ -1,4 +1,6 @@
-<html>
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?><html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no">

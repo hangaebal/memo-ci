@@ -1,4 +1,6 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 class Root extends CI_Controller {
     var $header_data = array();
 

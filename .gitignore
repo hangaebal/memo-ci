@@ -21,6 +21,6 @@ application/logs/*
 # 추가
 user_guide/*
 .idea/*
-
+public/upload/*
 
 
