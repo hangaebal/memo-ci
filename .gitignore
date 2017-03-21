@@ -22,5 +22,5 @@ application/logs/*
 user_guide/*
 .idea/*
 public/upload/*
-
+application/sessions/*
 
