@@ -40,5 +40,13 @@ class Menu extends CI_Model {
         $this->db->update('menu', $menu);
     }
 
+    public function delete($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->set('del_yn', 'Y');
+        $this->db->update('menu');
+    }
+
+
 
 }

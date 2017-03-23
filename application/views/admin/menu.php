@@ -52,14 +52,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             if (id == null) {
                 $(e.target).parents('tr').remove();
             } else {
-                var token = $("meta[name='_csrf']").attr("content");
-                var header = $("meta[name='_csrf_header']").attr("content");
+                var tokenName = 'X-XSRF-TOKEN';
+                var token = '<?php echo $this->security->get_csrf_hash();?>';
 
                 $.ajax({
                     url: '/admin/menu/' + id
                     ,method: 'delete'
                     ,beforeSend: function(xhr) {
-                        xhr.setRequestHeader(header, token);
+                        xhr.setRequestHeader(tokenName, token);
                     }
                 }).done(function() {
                     $(e.target).parents('tr').remove();

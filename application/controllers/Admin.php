@@ -97,5 +97,15 @@ class Admin extends CI_Controller {
         redirect('admin/menu');
     }
 
+    public function menu_delete($id)
+    {
+        $this->load->model('menu');
+        $this->menu->delete($id);
+        header('Content-Type: text/plain');
+        echo "success";
+    }
+
+
+
 
 }

@@ -58,3 +58,6 @@ $route['post/(:num)'] = 'root/post/$1';
 # admin
 $route['admin/login']['post'] = 'admin/login_proc';
 $route['admin/menu']['post'] = 'admin/menu_save';
+$route['admin/menu/(:num)']['delete'] = 'admin/menu_delete/$1';
+
+
