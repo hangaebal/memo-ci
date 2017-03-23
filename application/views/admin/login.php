@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
     <?php echo validation_errors(); ?>
-    <?php echo form_open('admin/login_proc'); ?>
+    <?php echo form_open('admin/login'); ?>
         <label for="username">Username:</label>
         <input type="text" size="20" id="username" name="username"/>
         <br/>

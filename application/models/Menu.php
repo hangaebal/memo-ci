@@ -21,4 +21,24 @@ class Menu extends CI_Model {
 		");
         return $query->result();
     }
+
+    public function get_list()
+    {
+        $query = $this->db->where('del_yn', 'N')->order_by('seq')->get('menu');
+        return $query->result();
+    }
+
+    public function insert($menu)
+    {
+        $this->db->insert('menu', $menu);
+    }
+
+    public function update($menu)
+    {
+        $this->db->where('id', $menu['id']);
+        unset($menu['id']);
+        $this->db->update('menu', $menu);
+    }
+
+
 }

@@ -55,4 +55,6 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['post/(:num)'] = 'root/post/$1';
 
-
+# admin
+$route['admin/login']['post'] = 'admin/login_proc';
+$route['admin/menu']['post'] = 'admin/menu_save';

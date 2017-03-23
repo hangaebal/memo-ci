@@ -43,7 +43,8 @@ class Admin extends CI_Controller {
         }
     }
 
-    public function _login_check($password) {
+    public function _login_check($password)
+    {
         $username = $this->input->post('username');
         log_message('error', 'Admin Login Check ===== ['.$username.']['.$password.']');
 
@@ -55,9 +56,46 @@ class Admin extends CI_Controller {
         return FALSE;
     }
 
-    public function logout() {
+    public function logout()
+    {
         $this->session->unset_userdata('admin_login');
         session_destroy();
         redirect('admin/');
     }
+
+    public function menu()
+    {
+        $this->output->enable_profiler(TRUE);
+        $this->load->model('menu');
+        $data['menu_list'] = $this->menu->get_list();
+
+        $this->load->helper('form');
+        $this->load->view('templates/admin_header');
+        $this->load->view('admin/menu', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
+    public function menu_save()
+    {
+        $ids = $this->input->post('id');
+        $titles = $this->input->post('title');
+
+        for ($i = 0; $i < sizeof($titles); $i++) {
+            $menu = array('seq' => $i+1, 'title' => $titles[$i]);
+
+            $this->load->model('menu');
+            if (!empty($ids) && sizeof($ids) > $i) {
+                // update
+                $menu['id'] = $ids[$i];
+                $this->menu->update($menu);
+            } else {
+                // insert
+                $this->menu->insert($menu);
+            }
+        }
+
+        redirect('admin/menu');
+    }
+
+
 }
