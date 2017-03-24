@@ -61,8 +61,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     ,beforeSend: function(xhr) {
                         xhr.setRequestHeader(tokenName, token);
                     }
-                }).done(function() {
-                    $(e.target).parents('tr').remove();
+                }).done(function(data) {
+                    if (data == "success") {
+                        $(e.target).parents('tr').remove();
+                    } else {
+                        alert("오류가 발생했습니다.");
+                    }
                 }).fail(function() {
                     alert('오류가 발생했습니다.');
                 });

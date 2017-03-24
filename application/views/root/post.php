@@ -2,13 +2,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <article id="postArticle">
-    <?php if ($post->type == 'text'): ?>
+    <?php if ($post->type === 'text'): ?>
         <div><?php echo nl2br($post->contents) ?></div>
-    <?php elseif ($post->type == 'editor'): ?>
+    <?php elseif ($post->type === 'editor'): ?>
         <div><?php echo $post->contents ?></div>
-    <?php elseif ($post->type == 'video'): ?>
+    <?php elseif ($post->type === 'video'): ?>
         <video src="/upload/<?php echo $image_list[0]->path?>" width="100%" controls></video>
-    <?php elseif ($post->type == 'image'): ?>
+    <?php elseif ($post->type === 'image'): ?>
         <?php foreach ($image_list as $image): ?>
             <div class="imageItem">
                 <?php $thumb_path = substr($image->path, 0, strrpos($image->path, '.')).'_thumb'.substr($image->path, strrpos($image->path, '.'))?>

@@ -59,5 +59,5 @@ $route['post/(:num)'] = 'root/post/$1';
 $route['admin/login']['post'] = 'admin/login_proc';
 $route['admin/menu']['post'] = 'admin/menu_save';
 $route['admin/menu/(:num)']['delete'] = 'admin/menu_delete/$1';
-
+$route['admin/post/seq']['post'] = 'admin/post_seq';
 

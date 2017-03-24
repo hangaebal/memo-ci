@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <?php foreach ($menu_list as $menu): ?>
                 <li class="mainMenu">
                     <p><?php echo $menu->title?></p>
-                    <ul class="subMenuUl <?php echo ($menu->has_year == 'Y')?'widthShortCut':'' ?>">
+                    <ul class="subMenuUl <?php echo ($menu->has_year === 'Y')?'widthShortCut':'' ?>">
                         <?php foreach ($post_list as $post): ?>
                             <?php if ($menu->id == $post->menu_id): ?>
                                 <li class="subMenu">
