@@ -107,8 +107,8 @@ class Admin extends CI_Controller {
         $this->load->model('menu');
         $this->menu->delete($id);
 
-        header('Content-Type: text/plain');
-        echo "success";
+        $this->output->set_content_type('text/plain')
+            ->set_output('success');
     }
 
 
@@ -118,7 +118,6 @@ class Admin extends CI_Controller {
 
     public function post()
     {
-
         $this->output->enable_profiler(TRUE);   // 개발 후 제거
 
         $menu_id = $this->input->get('menuId');
@@ -144,9 +143,106 @@ class Admin extends CI_Controller {
             $this->post->update_seq($post);
         }
 
-        header('Content-Type: text/plain');
-        echo "success";
+        $this->output->set_content_type('text/plain')
+            ->set_output('success');
     }
+
+    public function post_create_view()
+    {
+        $this->load->model('menu');
+        $data['menu_list'] = $this->menu->get_list();
+
+        $this->load->helper('form');
+        $this->load->view('templates/admin_header');
+        $this->load->view('admin/post/create', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
+    public function post_create()
+    {
+        $post['menu_id'] = $this->input->post('menuId');
+        $post['type'] = $this->input->post('type');
+        $post['title'] = $this->input->post('title');
+        $post['year'] = $this->input->post('year');
+        $post['contents'] = $this->input->post('contents');
+
+        $this->load->model('post');
+        $this->post->insert($post);
+
+        $post_id = $this->db->insert_id();
+        $imgIds = $this->input->post('imgId');
+        if (isset($imgIds)) {
+            $this->load->model('image');
+            $seq = 1;
+            foreach ($imgIds as $imgId) {
+                $image = array('id' => $imgId, 'seq' => $seq, 'post_id' => $post_id);
+                $this->image->update($image);
+                $seq++;
+            }
+        }
+
+        redirect('admin/post?menuId='.$this->input->post('menuId'));
+    }
+
+
+
+    /**
+     * 이미지 관련
+     */
+
+    public function post_image_upload()
+    {
+        $type = $this->input->post('type');
+        $title = $this->input->post('imgTitle');
+
+        /*$config['upload_path'] = './upload/'.$type;
+        $config['allowed_types'] = 'image|gif|jpg|jpeg|jpe|png|video|mp4|mov|mpeg|webm|ogg|3gp';
+        $config['file_ext_tolower'] = TRUE;
+        $config['encrypt_name'] = TRUE;
+
+        $this->load->library('upload', $config);*/
+        $this->load->library('upload');
+        $this->upload->set_upload_path('./upload/'.$type);
+
+        if ( ! $this->upload->do_upload('mFile')) {
+            $rtn['status'] = 'error';
+            $rtn['errMsg'] = $this->upload->display_errors();
+
+            $this->output->set_content_type('application/json', 'utf-8')
+                ->set_status_header(500)
+                ->set_output(json_encode($rtn));
+        } else {
+            // 이미지 테이블 INSERT
+            $path = $type.'/'.$this->upload->data('file_name');
+            $image['title'] = $title;
+            $image['path'] = $path;
+            $this->load->model('image');
+            $this->image->insert($image);
+            $image_id = $this->db->insert_id();
+
+            // 리턴 데이터
+            $rtn['status'] = 'success';
+            $rtn['id'] = $image_id;
+            $rtn['path'] = $path;
+            if ($type === 'image') {
+                $rtn['thumbPath'] = $path;
+                $rtn['title'] = $title;
+            }
+
+            // ================= 썸네일 적용 후 제거
+            $rtn['data'] = $this->upload->data();
+            // ================= 썸네일 적용 후 제거
+
+
+            $this->output->set_content_type('application/json', 'utf-8')
+                ->set_output(json_encode($rtn));
+        }
+    }
+
+
+
+
+
 
 
 

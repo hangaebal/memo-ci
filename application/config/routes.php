@@ -56,8 +56,11 @@ $route['translate_uri_dashes'] = FALSE;
 $route['post/(:num)'] = 'root/post/$1';
 
 # admin
-$route['admin/login']['post'] = 'admin/login_proc';
-$route['admin/menu']['post'] = 'admin/menu_save';
-$route['admin/menu/(:num)']['delete'] = 'admin/menu_delete/$1';
-$route['admin/post/seq']['post'] = 'admin/post_seq';
+$route['admin/login']['POST'] = 'admin/login_proc';
+$route['admin/menu']['POST'] = 'admin/menu_save';
+$route['admin/menu/(:num)']['DELETE'] = 'admin/menu_delete/$1';
+$route['admin/post/seq']['POST'] = 'admin/post_seq';
+$route['admin/post/create'] = 'admin/post_create_view';
+$route['admin/post']['POST'] = 'admin/post_create';
+$route['admin/post/image']['POST'] = 'admin/post_image_upload';
 

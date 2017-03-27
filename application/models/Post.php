@@ -37,5 +37,17 @@ class Post extends CI_Model {
         $this->db->update('post');
     }
 
+    public function insert($post)
+    {
+        $menu_id = $this->db->escape($post['menu_id']);
+        $this->db->set('seq', '(SELECT seq FROM (SELECT  IFNULL(MAX(seq),0) AS seq FROM post WHERE menu_id = '.$menu_id.') p) + 1', FALSE);
+        $this->db->insert('post', $post);
+
+        log_message('debug', $this->db->last_query());
+    }
+
+
+
+
 
 }
