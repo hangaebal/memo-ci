@@ -125,7 +125,7 @@ class Admin extends CI_Controller {
         $this->load->model('menu');
         $this->load->model('post');
         $data['menu_list'] = $this->menu->get_list();
-        $data['post_list'] = $this->post->get_list($menu_id);
+        $data['post_list'] = $this->post->get_list_by_menu($menu_id);
 
         $this->load->helper('form');
         $this->load->view('templates/admin_header');
@@ -184,6 +184,42 @@ class Admin extends CI_Controller {
         redirect('admin/post?menuId='.$this->input->post('menuId'));
     }
 
+    public function post_delete($id)
+    {
+        $this->load->model('image');
+        $this->load->model('post');
+
+        $post = $this->post->get($id);
+        $this->image->delete_post_image($id);
+        $this->post->delete($id);
+
+        $this->output->set_content_type('text/plain')
+            ->set_output($this->config->site_url('admin/post?menuId='.$post->menu_id));
+    }
+
+    public function post_edit_view($id)
+    {
+        $this->load->model('post');
+        $this->load->model('menu');
+        $data['post'] = $this->post->get($id);
+        $data['menu_list'] = $this->menu->get_list();
+
+        if (empty($data['post'])) {
+            show_404();
+        }
+
+        $type = $data['post']->type;
+        if ($type === 'image' || $type === 'video') {
+            $this->load->model('image');
+            $data['image_list'] = $this->image->get_post_image_list($id);
+        }
+
+        $this->load->helper('form');
+        $this->load->view('templates/admin_header');
+        $this->load->view('admin/post/edit', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
 
 
     /**
@@ -195,12 +231,6 @@ class Admin extends CI_Controller {
         $type = $this->input->post('type');
         $title = $this->input->post('imgTitle');
 
-        /*$config['upload_path'] = './upload/'.$type;
-        $config['allowed_types'] = 'image|gif|jpg|jpeg|jpe|png|video|mp4|mov|mpeg|webm|ogg|3gp';
-        $config['file_ext_tolower'] = TRUE;
-        $config['encrypt_name'] = TRUE;
-
-        $this->load->library('upload', $config);*/
         $this->load->library('upload');
         $this->upload->set_upload_path('./upload/'.$type);
 
@@ -239,7 +269,14 @@ class Admin extends CI_Controller {
         }
     }
 
+    public function post_image_delete($id)
+    {
+        $this->load->model('image');
+        $this->image->delete($id);
 
+        $this->output->set_content_type('text/plain')
+            ->set_output('success');
+    }
 
 
 

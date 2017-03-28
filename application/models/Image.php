@@ -27,4 +27,11 @@ class Image extends CI_Model {
         $this->db->set('del_yn', 'Y');
         $this->db->update('image');
     }
+
+    public function delete_post_image($post_id)
+    {
+        $this->db->where('post_id', $post_id);
+        $this->db->set('del_yn', 'Y');
+        $this->db->update('image');
+    }
 }

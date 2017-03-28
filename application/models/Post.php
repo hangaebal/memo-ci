@@ -17,7 +17,7 @@ class Post extends CI_Model {
         return $query->row();
     }
 
-    public function get_list($menu_id)
+    public function get_list_by_menu($menu_id)
     {
         if (empty($menu_id)) {
             $this->db->where('menu_id = (SELECT id FROM menu ORDER BY seq LIMIT 1)');
@@ -45,6 +45,14 @@ class Post extends CI_Model {
 
         log_message('debug', $this->db->last_query());
     }
+
+    public function delete($id)
+    {
+        $this->db->set('del_yn', 'Y');
+        $this->db->where('id', $id);
+        $this->db->update('post');
+    }
+
 
 
 

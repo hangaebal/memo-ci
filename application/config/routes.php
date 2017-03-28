@@ -57,10 +57,17 @@ $route['post/(:num)'] = 'root/post/$1';
 
 # admin
 $route['admin/login']['POST'] = 'admin/login_proc';
+
 $route['admin/menu']['POST'] = 'admin/menu_save';
 $route['admin/menu/(:num)']['DELETE'] = 'admin/menu_delete/$1';
+
 $route['admin/post/seq']['POST'] = 'admin/post_seq';
 $route['admin/post/create'] = 'admin/post_create_view';
 $route['admin/post']['POST'] = 'admin/post_create';
+$route['admin/post/(:num)']['DELETE'] = 'admin/post_delete/$1';
+$route['admin/post/edit/(:num)'] = 'admin/post_edit_view/$1';
+
 $route['admin/post/image']['POST'] = 'admin/post_image_upload';
+$route['admin/post/image/(:num)']['DELETE'] = 'admin/post_image_delete/$1';
+
 
