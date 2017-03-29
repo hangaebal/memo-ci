@@ -170,16 +170,8 @@ class Admin extends CI_Controller {
         $this->post->insert($post);
 
         $post_id = $this->db->insert_id();
-        $imgIds = $this->input->post('imgId');
-        if (isset($imgIds)) {
-            $this->load->model('image');
-            $seq = 1;
-            foreach ($imgIds as $imgId) {
-                $image = array('id' => $imgId, 'seq' => $seq, 'post_id' => $post_id);
-                $this->image->update($image);
-                $seq++;
-            }
-        }
+        $img_ids = $this->input->post('imgId');
+        $this->_post_image_update($img_ids, $post_id);
 
         redirect('admin/post?menuId='.$this->input->post('menuId'));
     }
@@ -220,6 +212,36 @@ class Admin extends CI_Controller {
         $this->load->view('templates/admin_footer');
     }
 
+    public function post_edit()
+    {
+        $post_id = $this->input->post('id');
+        $post['id'] = $post_id;
+        $post['menu_id'] = $this->input->post('menuId');
+        $post['title'] = $this->input->post('title');
+        $post['year'] = $this->input->post('year');
+        $post['contents'] = $this->input->post('contents');
+
+        $this->load->model('post');
+        $this->post->update($post);
+
+        $img_ids = $this->input->post('imgId');
+        $this->_post_image_update($img_ids, $post_id);
+
+        redirect('admin/post?menuId='.$this->input->post('menuId'));
+    }
+
+    public function _post_image_update($img_ids, $post_id)
+    {
+        if (isset($img_ids)) {
+            $this->load->model('image');
+            $seq = 1;
+            foreach ($img_ids as $imgId) {
+                $image = array('id' => $imgId, 'seq' => $seq, 'post_id' => $post_id);
+                $this->image->update($image);
+                $seq++;
+            }
+        }
+    }
 
 
     /**

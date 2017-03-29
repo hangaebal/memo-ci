@@ -66,6 +66,7 @@ $route['admin/post/create'] = 'admin/post_create_view';
 $route['admin/post']['POST'] = 'admin/post_create';
 $route['admin/post/(:num)']['DELETE'] = 'admin/post_delete/$1';
 $route['admin/post/edit/(:num)'] = 'admin/post_edit_view/$1';
+$route['admin/post/edit']['POST'] = 'admin/post_edit';
 
 $route['admin/post/image']['POST'] = 'admin/post_image_upload';
 $route['admin/post/image/(:num)']['DELETE'] = 'admin/post_image_delete/$1';

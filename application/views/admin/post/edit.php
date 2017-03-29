@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div>
 
     <?php echo form_open('admin/post/edit', array('id' => 'postForm')) ?>
-
+        <input type="hidden" name="id" value="<?php echo $post->id ?>"/>
         <div class="form-horizontal">
             <div class="form-group">
                 <label class="col-sm-1 control-label">메뉴</label>

@@ -42,8 +42,6 @@ class Post extends CI_Model {
         $menu_id = $this->db->escape($post['menu_id']);
         $this->db->set('seq', '(SELECT seq FROM (SELECT  IFNULL(MAX(seq),0) AS seq FROM post WHERE menu_id = '.$menu_id.') p) + 1', FALSE);
         $this->db->insert('post', $post);
-
-        log_message('debug', $this->db->last_query());
     }
 
     public function delete($id)
@@ -53,7 +51,12 @@ class Post extends CI_Model {
         $this->db->update('post');
     }
 
-
+    public function update($post)
+    {
+        $this->db->where('id', $post['id']);
+        unset($post['id']);
+        $this->db->update('post', $post);
+    }
 
 
 
