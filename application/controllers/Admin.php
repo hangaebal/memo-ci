@@ -254,9 +254,10 @@ class Admin extends CI_Controller {
         $title = $this->input->post('imgTitle');
 
         $this->load->library('upload');
-        $this->upload->set_upload_path('./upload/'.$type);
+        $this->upload->set_upload_path('upload'.DIRECTORY_SEPARATOR.$type);
 
         if ( ! $this->upload->do_upload('mFile')) {
+            log_message('error', $this->upload->display_errors());
             $rtn['status'] = 'error';
             $rtn['errMsg'] = $this->upload->display_errors();
 
@@ -264,8 +265,37 @@ class Admin extends CI_Controller {
                 ->set_status_header(500)
                 ->set_output(json_encode($rtn));
         } else {
+            $upload_data = $this->upload->data();
+
+            if ($type === 'image') {
+
+                $ori_width = $upload_data['image_width'];
+                log_message('debug', print_r($upload_data, TRUE));
+
+                // ----- 썸네일 생성
+                $image_config['source_image'] = $upload_data['full_path'];
+                $image_config['width'] = 700;
+                //$image_config['height'] = ;
+                $image_config['create_thumb'] = TRUE;
+                $this->load->library('image_lib', $image_config);
+                if ( ! $this->image_lib->resize()) {
+                    // 썸네일 생성 오류
+                    log_message('error', $this->image_lib->display_errors());
+                    $rtn['status'] = 'error';
+                    $rtn['errMsg'] = $this->image_lib->display_errors();
+
+                    $this->output->set_content_type('application/json', 'utf-8')
+                        ->set_status_header(500)
+                        ->set_output(json_encode($rtn));
+                } else {
+                    $rtn['thumbPath'] = $type.'/'.$upload_data['raw_name'].'_thumb'.$upload_data['file_ext'];
+                    $rtn['title'] = $title;
+                }
+
+            }
+
             // 이미지 테이블 INSERT
-            $path = $type.'/'.$this->upload->data('file_name');
+            $path = $type.'/'.$upload_data['file_name'];
             $image['title'] = $title;
             $image['path'] = $path;
             $this->load->model('image');
@@ -276,13 +306,9 @@ class Admin extends CI_Controller {
             $rtn['status'] = 'success';
             $rtn['id'] = $image_id;
             $rtn['path'] = $path;
-            if ($type === 'image') {
-                $rtn['thumbPath'] = $path;
-                $rtn['title'] = $title;
-            }
 
             // ================= 썸네일 적용 후 제거
-            $rtn['data'] = $this->upload->data();
+            $rtn['data'] = $upload_data;
             // ================= 썸네일 적용 후 제거
 
 
