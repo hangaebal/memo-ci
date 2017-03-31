@@ -25,7 +25,11 @@ class Root extends CI_Controller {
     {
 
         $data['post'] = $this->post->get($id);
-        if ($data['post']->type != 'text') {
+        if (empty($data['post'])) {
+            show_404();
+        }
+        $type = $data['post']->type;
+        if ($type === 'image' || $type === 'video') {
             $this->load->model('image');
             $data['image_list'] = $this->image->get_post_image_list($data['post']->id);
         }
